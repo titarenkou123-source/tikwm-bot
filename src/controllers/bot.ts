@@ -123,18 +123,34 @@ export class BotController {
 
     switch (command) {
       case '/start':
+        
+      case '/start':
         await this.telegram.sendMessage(
           chatId,
-          '👋 *Welcome!*\n\n' +
-            'I download videos from TikTok, Facebook & YouTube — free, no watermark.\n\n' +
-            '*Just send me:*\n' +
-            '• TikTok link → video/photos + 🎵 audio\n' +
-            '• Facebook link → video + 🎵 audio\n' +
-            '• YouTube link → pick 1080p–360p or 🎵 audio\n' +
-            '• Any word → YouTube search results\n' +
-            '• /story @handle → browse their videos\n\n' +
-            'Type /help for everything I can do.',
+          '👋 *Вітаю у TikTok Saver UA!*\n\n' +
+            '🎬 Надішли посилання на TikTok, Facebook або YouTube — я допоможу завантажити відео.\n\n' +
+            '📥 *Як користуватися:*\n' +
+            '1. Скопіюй посилання на відео.\n' +
+            '2. Надішли його сюди.\n' +
+            '3. Дочекайся результату!\n\n' +
+            'Обери потрібний пункт нижче 👇',
+          {
+            inline_keyboard: [
+              [
+                { text: '📥 Як завантажити', callback_data: 'menu_help' },
+                { text: 'ℹ️ Про бота', callback_data: 'menu_about' },
+              ],
+              [
+                {
+                  text: '🔗 Поділитися ботом',
+                  url: 'https://t.me/my_tiktok_saver_ua_bot',
+                },
+              ],
+            ],
+          },
         );
+        return;
+
         return;
 
       case '/help':
@@ -603,9 +619,34 @@ export class BotController {
     }
 
     if (data.startsWith('nextpage_')) {
-      await this.onNextPage(callbackId, Number(chatId), Number(messageId), data.slice(9));
+      
+    if (data === 'menu_help') {
+      await this.telegram.answerCallbackQuery(callbackId);
+      await this.telegram.sendMessage(
+        chatId,
+        '*📥 Як завантажити відео*\n\n' +
+          '1. Відкрий TikTok, Facebook або YouTube.\n' +
+          '2. Скопіюй посилання на відео.\n' +
+          '3. Надішли посилання боту.\n' +
+          '4. Дочекайся відео або кнопок завантаження.\n\n' +
+          '💡 Якщо посилання не працює, перевір, чи відео доступне.',
+      );
       return;
     }
+
+    if (data === 'menu_about') {
+      await this.telegram.answerCallbackQuery(callbackId);
+      await this.telegram.sendMessage(
+        chatId,
+        '🤖 *TikTok Saver UA*\n\n' +
+          'Допомагаю завантажувати відео з TikTok, Facebook і YouTube.\n\n' +
+          '🎬 Просто надішли посилання на відео.\n' +
+          '📖 Команди: /start, /help, /about, /story\n\n' +
+          'Користуйся сервісом відповідально та поважай права авторів.',
+      );
+      return;
+    }
+
     if (data.startsWith('ytdl_')) {
       await this.onYtDl(callbackId, Number(chatId), Number(messageId), data.slice(5));
       return;
