@@ -655,7 +655,11 @@ export class BotController {
     const messageId = callback.message?.message_id ?? null;
     const userId = Number(callback.from?.id ?? 0);
       
-      if (data === 'check_subscription') {
+      if (!chatId || !userId) {
+      await this.telegram.answerCallbackQuery(callbackId);
+      return;
+    } 
+    if (data === 'check_subscription') {
         const subscribed = await this.checkRequiredSubscriptions(userId);
 
       if (!subscribed) {
@@ -676,11 +680,6 @@ export class BotController {
         chatId,
         '🎉 Чудово! Тепер можеш надсилати посилання на відео.',
       );
-      return;
-    }
-
-    if (!chatId || !userId) {
-      await this.telegram.answerCallbackQuery(callbackId);
       return;
     }
       
