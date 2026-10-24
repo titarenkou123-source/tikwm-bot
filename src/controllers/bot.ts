@@ -775,6 +775,27 @@ export class BotController {
     await this.telegram.answerCallbackQuery(callbackId);
     await this.telegram.sendChatAction(chatId, 'upload_audio');
     await this.telegram.sendAudio(chatId, cached.url, '🎵 Extracted audio');
+  }  
+  private async checkRequiredSubscriptions(userId: number): Promise<boolean> {
+    for (const channel of REQUIRED_CHANNELS) {
+      const result = await this.telegram.getChatMember(channel, userId);
+
+      if (!result?.ok) return false;
+
+      const member = result.result as
+        | { status?: string; is_member?: boolean }
+        | undefined;
+
+      if (!member) return false;
+
+      const subscribed =
+        ['creator', 'administrator', 'member'].includes(member.status ?? '') ||
+        (member.status === 'restricted' && member.is_member === true);
+
+      if (!subscribed) return false;
+    }
+
+    return true;
   }
 }
 const REQUIRED_CHANNELS = ['@sohra22_25', '@quotes_about_us'];
