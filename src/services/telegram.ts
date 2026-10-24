@@ -263,4 +263,14 @@ export class TelegramService {
   async setWebhook(url: string): Promise<TelegramResult | null> {
     return this.request('setWebhook', { url });
   }
-}
+
+  async getChatMember(
+    chatId: string,
+    userId: number,
+  ): Promise<TelegramResult | null> {
+    return this.request('getChatMember', {
+      chat_id: chatId,
+      user_id: userId,
+    });
+  }
+
