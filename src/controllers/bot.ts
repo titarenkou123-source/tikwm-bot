@@ -146,7 +146,6 @@ export class BotController {
           return;
         }
         
-      case '/start':
         await this.telegram.sendMessage(
           chatId,
           '👋 *Вітаю у TikTok Saver UA!*\n\n' +
