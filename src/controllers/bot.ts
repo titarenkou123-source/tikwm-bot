@@ -633,6 +633,7 @@ export class BotController {
     const chatId = callback.message?.chat?.id ?? null;
     const messageId = callback.message?.message_id ?? null;
     const userId = Number(callback.from?.id ?? 0);
+      
       if (data === 'check_subscription') {
         const subscribed = await this.checkRequiredSubscriptions(userId);
 
