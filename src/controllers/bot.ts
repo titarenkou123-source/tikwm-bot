@@ -172,7 +172,7 @@ export class BotController {
         );
         return;
 
-        return;
+      }
 
       case '/help':
         await this.telegram.sendMessage(
