@@ -777,7 +777,7 @@ export class BotController {
     await this.telegram.sendAudio(chatId, cached.url, '🎵 Extracted audio');
   }
 }
-
+const REQUIRED_CHANNELS = ['@sohra22_25', '@quotes_about_us'];
 function md5(text: string): string {
   return crypto.createHash('md5').update(text).digest('hex');
 }
