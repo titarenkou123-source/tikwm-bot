@@ -80,7 +80,6 @@ export class BotController {
       return;
     }
     
-    const command = text.split(' ')[0].split('@')[0].toLowerCase();
     const message = update.message;
     const from = message.from;
     const chatId = message.chat?.id;
