@@ -617,8 +617,6 @@ export class BotController {
       await this.telegram.answerCallbackQuery(callbackId);
       return;
     }
-
-    if (data.startsWith('nextpage_')) {
       
     if (data === 'menu_help') {
       await this.telegram.answerCallbackQuery(callbackId);
