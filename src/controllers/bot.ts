@@ -121,8 +121,30 @@ export class BotController {
   private async handleCommand(text: string, chatId: number, from: TelegramUser): Promise<void> {
     const command = text.split(' ')[0].split('@')[0].toLowerCase();
 
-    switch (command) {
-      case '/start':
+        switch (command) {
+      case '/start': {
+        const subscribed = await this.checkRequiredSubscriptions(from.id);
+
+        if (!subscribed) {
+          await this.telegram.sendMessage(
+            chatId,
+            '🔒 *Щоб користуватися ботом, підпишись на обидва канали:*',
+            {
+              inline_keyboard: [
+                [
+                  { text: '📢 Канал 1', url: 'https://t.me/sohra22_25' },
+                ],
+                [
+                  { text: '📢 Канал 2', url: 'https://t.me/quotes_about_us' },
+                ],
+                [
+                  { text: '✅ Я підписався', callback_data: 'check_subscription' },
+                ],
+              ],
+            },
+          );
+          return;
+        }
         
       case '/start':
         await this.telegram.sendMessage(
