@@ -633,6 +633,29 @@ export class BotController {
     const chatId = callback.message?.chat?.id ?? null;
     const messageId = callback.message?.message_id ?? null;
     const userId = Number(callback.from?.id ?? 0);
+      if (data === 'check_subscription') {
+        const subscribed = await this.checkRequiredSubscriptions(userId);
+
+      if (!subscribed) {
+        await this.telegram.answerCallbackQuery(
+          callbackId,
+          '❌ Ти ще не підписався на обидва канали!',
+          true,
+        );
+        return;
+      }
+
+      await this.telegram.answerCallbackQuery(
+        callbackId,
+        '✅ Підписку підтверджено!',
+      );
+
+      await this.telegram.sendMessage(
+        chatId,
+        '🎉 Чудово! Тепер можеш надсилати посилання на відео.',
+      );
+      return;
+    }
 
     if (!chatId || !userId) {
       await this.telegram.answerCallbackQuery(callbackId);
